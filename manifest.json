@@ -1,7 +1,7 @@
 {
 	"id": "more-markers",
 	"name": "More Markers",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"minAppVersion": "0.15.0",
 	"description": "Create your own markers with your own colors and symbols.",
 	"author": "Catif",
