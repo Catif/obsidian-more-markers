@@ -36,10 +36,9 @@ export default class MoreMarkers extends Plugin {
 				
 				const beforeChanges = el.innerHTML;
 				el.innerHTML = el.innerHTML.replace(regex, `<span style="background-color: ${marker.color};">$1</span>`);
-				
+
 				if (beforeChanges !== el.innerHTML) {
 					isChanged = true;
-					console.log(isChanged);
 				}
 			});
 		});
