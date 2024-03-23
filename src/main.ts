@@ -8,6 +8,7 @@ import { DEFAULT_SETTINGS } from './PluginSettingTab';
 export default class MoreMarkers extends Plugin {
 	settings: MoreMarkersSettings;
 
+
 	async onload() {
 		await this.loadSettings();
 
@@ -18,19 +19,23 @@ export default class MoreMarkers extends Plugin {
 		this.addSettingTab(new SettingTab(this.app, this));
 	}
 
+
 	async onunload() {
 		this.refreshPreview();
 	}
 
+
 	async loadSettings() {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
 	}
+
 
 	async saveSettings() {
 		await this.saveData(this.settings);
 
 		this.refreshPreview();
 	}
+
 
 	async refreshPreview() {
 		this.app.workspace.getActiveViewOfType(MarkdownView)?.previewMode.rerender(true);
