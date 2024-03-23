@@ -14,6 +14,10 @@ export class SettingTab extends PluginSettingTab {
 
 		containerEl.empty();
 
+    containerEl.createEl('h1', {text: 'More Markers'});
+    containerEl.createEl('p', {text: 'Warning: When editing markers, you will need to refresh the page to see the changes.'});
+
+    containerEl.createEl('h2', {text: 'List of Markers'});
 		// Display all markers
 		this.plugin.settings.markers.forEach((marker, index) => {
 			new Setting(containerEl)
