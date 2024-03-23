@@ -1,6 +1,7 @@
 import { Plugin } from 'obsidian';
 import { MoreMarkersSettings } from './interfaces';
 import { SettingTab } from './PluginSettingTab';
+import { searchAndPlaceMarkers } from './MoreMarkers';
 // Remember to rename these classes and interfaces!
 
 const DEFAULT_SETTINGS: MoreMarkersSettings = {
@@ -13,38 +14,16 @@ const DEFAULT_SETTINGS: MoreMarkersSettings = {
 
 export default class MoreMarkers extends Plugin {
 	settings: MoreMarkersSettings;
-	settingsTab: SettingTab;
 
 	async onload() {
 		await this.loadSettings();
 
-		this.settingsTab = new SettingTab(this.app, this);
-
-		this.registerMarkdownPostProcessor((el, context) => {
-			const markers = [...this.settings.markers];
-			markers.sort((a, b) => b.symbols.length - a.symbols.length);
-
-			let isChanged = false;
-			markers.forEach((marker) => {
-				if (isChanged) {
-					return;
-				}
-
-				const symbols = marker.symbols;
-				const symbolsEscaped = symbols.replace(/[-\\^$*+?.()|[\]{}]/g, '\\$&');
-				const regex = new RegExp(`${symbolsEscaped}(.*)${symbolsEscaped}`, 'g');
-				
-				const beforeChanges = el.innerHTML;
-				el.innerHTML = el.innerHTML.replace(regex, `<span style="background-color: ${marker.color};">$1</span>`);
-
-				if (beforeChanges !== el.innerHTML) {
-					isChanged = true;
-				}
-			});
+		this.registerMarkdownPostProcessor((el) => {
+			searchAndPlaceMarkers(this.settings.markers, el);
 		});
 
 		// This adds a settings tab so the user can configure various aspects of the plugin
-		this.addSettingTab(this.settingsTab);
+		this.addSettingTab(new SettingTab(this.app, this));
 	}
 
 	async loadSettings() {
@@ -53,5 +32,9 @@ export default class MoreMarkers extends Plugin {
 
 	async saveSettings() {
 		await this.saveData(this.settings);
+		// Refresh the Markdown preview
+		this.app.workspace.iterateAllLeaves((leaf) => {
+			console.log(leaf);
+		});
 	}
 }
