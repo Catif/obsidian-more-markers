@@ -2,15 +2,8 @@ import { Plugin, MarkdownView } from 'obsidian';
 import { MoreMarkersSettings } from './interfaces';
 import { SettingTab } from './PluginSettingTab';
 import { searchAndPlaceMarkers } from './MoreMarkers';
-// Remember to rename these classes and interfaces!
+import { DEFAULT_SETTINGS } from './PluginSettingTab';
 
-const DEFAULT_SETTINGS: MoreMarkersSettings = {
-	markers: [
-		{ symbols: '!!', color: '#ff0000' },
-		{ symbols: '??', color: '#00ff00' },
-		{ symbols: '?!', color: '#00ffff' }
-	]
-}
 
 export default class MoreMarkers extends Plugin {
 	settings: MoreMarkersSettings;
