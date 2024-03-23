@@ -1,4 +1,4 @@
-import { Plugin } from 'obsidian';
+import { Plugin, MarkdownView } from 'obsidian';
 import { MoreMarkersSettings } from './interfaces';
 import { SettingTab } from './PluginSettingTab';
 import { searchAndPlaceMarkers } from './MoreMarkers';
@@ -22,8 +22,11 @@ export default class MoreMarkers extends Plugin {
 			searchAndPlaceMarkers(this.settings.markers, el);
 		});
 
-		// This adds a settings tab so the user can configure various aspects of the plugin
 		this.addSettingTab(new SettingTab(this.app, this));
+	}
+
+	async onunload() {
+		this.refreshPreview();
 	}
 
 	async loadSettings() {
@@ -32,9 +35,11 @@ export default class MoreMarkers extends Plugin {
 
 	async saveSettings() {
 		await this.saveData(this.settings);
-		// Refresh the Markdown preview
-		this.app.workspace.iterateAllLeaves((leaf) => {
-			console.log(leaf);
-		});
+
+		this.refreshPreview();
+	}
+
+	async refreshPreview() {
+		this.app.workspace.getActiveViewOfType(MarkdownView)?.previewMode.rerender(true);
 	}
 }
